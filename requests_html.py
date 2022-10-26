@@ -757,7 +757,7 @@ class BaseSession(requests.Session):
     """
 
     def __init__(self, mock_browser : bool = True, verify : bool = True,
-                 browser_args : list = ['--no-sandbox']):
+                 browser_args : list = ['--no-sandbox', '--single-process', '--disable-dev-shm-usage', '--disable-gpu', '--no-zygote']):
         super().__init__()
 
         # Mock a web browser's user agent.
@@ -779,7 +779,7 @@ class BaseSession(requests.Session):
     @property
     async def browser(self):
         if not hasattr(self, "_browser"):
-            self._browser = await pyppeteer.launch(executablePath='/usr/bin/google-chrome-stable', ignoreHTTPSErrors=not(self.verify), headless=True, pipe=True, args=self.__browser_args)
+            self._browser = await pyppeteer.launch(executablePath='/usr/bin/google-chrome-stable', headless=True, args=['--no-sandbox'])
 
         return self._browser
 
